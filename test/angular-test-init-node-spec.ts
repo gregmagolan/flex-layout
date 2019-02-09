@@ -16,25 +16,11 @@ import 'zone.js/dist/task-tracking.js';
 import 'reflect-metadata/Reflect';
 
 // This hack is needed to get jasmine, node and zone working inside bazel.
-// 1) we load `jasmine-core` which contains the ENV: it, describe etc...
+// Initialize jasmine by calling jasmineCore boot. This will initialize
+// global.jasmine so that it can be patched by zone.js jasmine-patch.js.
 const jasmineCore: any = require('jasmine-core');
-// 2) We create an instance of `jasmine` ENV.
-const patchedJasmine = jasmineCore.boot(jasmineCore);
-// 3) Save the `jasmine` into global so that `zone.js/dist/jasmine-patch.js` can get a hold of it to
-// patch it.
-(global as any)['jasmine'] = patchedJasmine;
-// 4) Change the `jasmine-core` to make sure that all subsequent jasmine's have the same ENV,
-// otherwise the patch will not work.
-//    This is needed since Bazel creates a new instance of jasmine and it's ENV and we want to make
-//    sure it gets the same one.
-jasmineCore.boot = function() {
-  return patchedJasmine;
-};
-// 5) Patch jasmine ENV with code which understands ProxyZone.
+jasmineCore.boot(jasmineCore);
 import 'zone.js/dist/jasmine-patch.js';
-// 6) Save the patched `jasmineCore` into global so that
-// `@build_bazel_rules_nodejs//internal/jasmine_node_test/jasmine_runner.js` can get a hold of it
-(global as any)['jasmineCore'] = jasmineCore;
 
 (global as any).isNode = true;
 (global as any).isBrowser = false;

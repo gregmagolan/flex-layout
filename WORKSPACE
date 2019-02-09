@@ -5,8 +5,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # Add NodeJS rules (explicitly used for sass bundle rules)
 http_archive(
   name = "build_bazel_rules_nodejs",
-  url = "https://github.com/gregmagolan/rules_nodejs/archive/c8b92cee7e7ed404d7daf49d2379cd6feda799b8.zip",
-  strip_prefix = "rules_nodejs-c8b92cee7e7ed404d7daf49d2379cd6feda799b8",
+  url = "https://github.com/gregmagolan/rules_nodejs/archive/a05dd6b1f400341eed44a81eeeef441ddfdc8a7c.zip",
+  strip_prefix = "rules_nodejs-a05dd6b1f400341eed44a81eeeef441ddfdc8a7c",
 )
 
 # Add TypeScript rules
